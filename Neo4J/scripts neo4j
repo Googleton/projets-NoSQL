@@ -1,0 +1,119 @@
+// Insertion des données - Entreprises
+CREATE (e:ENTREPRISE 
+	{
+		nom: "Astrée Software", 
+		secteur_activite:"Industriel", 
+		description:"Edite un logiciel MES"
+	}		
+)
+CREATE (e:ENTREPRISE 
+	{
+		nom: "Groupe Casino", 
+		secteur_activite:"Grande Distribution", 
+		description: "Chaîne de magasins d'origine stéphanoise"
+	}
+)
+CREATE (e:ENTREPRISE 
+	{
+		nom: "Oracle", 
+		secteur_activite:"Numérique", 
+		description:"Base de données"
+	}
+)
+
+// Insertion des données - Users
+CREATE (u:UTILISATEUR 
+	{
+		nom: "MAY" ,
+ 		prenom:"Adrian",
+ 		poste: "Apprenti"
+	}
+)
+CREATE (u:UTILISATEUR 
+	{
+		nom: "VIALLON" ,
+ 		prenom:"Hugo",
+ 		poste: "Apprenti"
+ 	}
+)
+CREATE (u:UTILISATEUR 
+	{
+		nom: "VEGAS" ,
+ 		prenom:"Victoria",
+ 		poste: "Apprenti"
+ 	}
+)
+
+// Ajout de relations "Travaille" Utilisateur -> Entreprise
+MATCH 
+	(e:ENTREPRISE),(u:UTILISATEUR)
+WHERE 
+	e.nom = "Astrée Software" 
+AND 
+	u.nom = "VIALLON"
+CREATE 
+	(u)-[r:Travaille {
+	 	Start: datetime("2019-08-06T00:00:00.000+00:00"), 
+	 	End: datetime("2021-07-31T00:00:00.000+00:00"), 
+	 	As: "Apprenti" 
+	 }]->(e)
+
+MATCH 
+	(e:ENTREPRISE),(u:UTILISATEUR)
+WHERE 
+	e.nom = "Groupe Casino" 
+AND 
+	u.nom = "MAY"
+CREATE 
+	(u)-[r:Travaille { 
+		Start: datetime("2019-09-01T000:00:00.000+00:00"), 
+		End: datetime("2021-08-31T00:00:00.000+00:00"),
+		As: "Apprenti" 
+	}]->(e)
+
+MATCH 
+	(e:ENTREPRISE),(u:UTILISATEUR)
+WHERE 
+	e.nom = "Groupe Casino" 
+AND 
+	u.nom = "VEGAS"
+CREATE 
+	(u)-[r:Travaille { 
+		Start: datetime("2018-09-01T00:00:00.000+00:00"), 
+		End: datetime("2021-08-31T00:00:00.000+00:00"), 
+		As: "Apprenti" 
+	}]->(e)
+
+// Ajout de relation "TravailleAvec" (collègues) Utilisateur -> Utilisateur
+MATCH 
+	(u:UTILISATEUR),(u:UTILISATEUR)
+WHERE 
+	u.nom = "MAY"
+AND 
+	u.nom = "VEGAS"
+CREATE 
+	(u)-[a:TravailleAvec ]->(u)
+
+MATCH 
+	(u:UTILISATEUR),(u:UTILISATEUR)
+WHERE 
+	u.nom = "MAY" 
+AND 
+	u.nom = "VIALLON"
+CREATE 
+	(u)-[c:Connait ]->(u)
+
+MATCH 
+	(u:UTILISATEUR) 
+WHERE 
+	u.nom =~ '.*ON.*'
+RETURN 
+	u.nom;
+
+
+MATCH 
+	(e:ENTREPRISE) 
+WHERE 
+	e.nom =~ '.*O.*'
+RETURN 
+	e.nom;

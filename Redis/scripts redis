@@ -1,0 +1,24 @@
+HSET appel1 id "bb677d32-781e-469a-acea-f92e8846c2c6"
+HSET appel1 heure_appel "15:44"
+HSET appel1 numero "0102030410"
+HSET appel1 statut "Terminé"
+HSET appel1 duree 406
+HSET appel1 operateur "MARTIN"
+HSET appel1 description "Problème de connexion à internet depuis son domicile, alors que la Wifi est affichée comme étant en état de marche. Renvoi vers une boutique pour changer la Box"
+
+HSET appel2 id "c76b5f29-abee-4635-82c5-563154efbe5d"
+HSET appel2 heure_appel "14h08"
+HSET appel2 numero "0607080912"
+HSET appel2 statut "Non affecté"
+HSET appel2 duree 0
+HSET appel2 operateur ""
+HSET appel2 description ""
+
+-- On mets les appels 1 et 2 dans la liste d'appels
+LPUSH liste_appels appel1
+LPUSH liste_appels appel2
+
+-- On attribue le statut "en cours" à l'appel 2 : Un opérateur viens de le prendre en charge
+-- On attribue également un opérateur à cet appel
+HSET appel2 statut "En cours"
+HSET appel2 operateur "MULLER"
